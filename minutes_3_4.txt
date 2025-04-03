@@ -1,1 +1,20 @@
+# MTRX2700 Week 2 Lab Meeting Minutes  
+Date: 06/03/2025  
+Location: Mechatronics Dry Lab  
+Group Name: S4-G2 
+Minute Taker: Jason Yang
+
+---
+
+## 1. Attendance Check
+
+| Name           | Present | 
+|----------------|---------|
+| Oscar          | ✅       | 
+| Jiaze          | ✅       | 
+| Jason          | ✅       | 
+
+---
+
+## 2. Objectives for Week 2
 
