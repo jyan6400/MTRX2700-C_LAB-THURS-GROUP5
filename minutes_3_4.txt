@@ -10,9 +10,9 @@ Minute Taker: Jason Yang
 
 | Name           | Present | 
 |----------------|---------|
-| Oscar          | ✅       | 
-| Jiaze          | ✅       | 
-| Jason          | ✅       | 
+| Shirui         | ✅      | Left Early Due to Appointment
+| Saksham        | ✅      | Left Early Due to Appointment
+| Jason          | ✅      | 
 
 ---
 
