@@ -1,0 +1,6 @@
+/Users/sakshamgarg/Documents/MTRX2700-2025/stm32f303-definitions/Core/Inc/core_cm4.h:1688:22:__NVIC_EnableIRQ	16	static
+/Users/sakshamgarg/Documents/MTRX2700-2025/stm32f303-definitions/Core/Inc/core_cm4.h:1816:22:__NVIC_SetPriority	16	static
+../Src/timer.c:7:6:timer_init	16	static
+../Src/timer.c:28:6:TIM2_IRQHandler	4	static
+../Src/timer.c:35:9:timer_check_flag	4	static
+../Src/timer.c:39:6:timer_clear_flag	4	static
