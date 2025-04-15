@@ -1,0 +1,4 @@
+/Users/sakshamgarg/Documents/MTRX2700-2025/stm32f303-definitions/Core/Inc/core_cm4.h:1688:22:__NVIC_EnableIRQ	2
+/Users/sakshamgarg/Documents/MTRX2700-2025/stm32f303-definitions/Core/Inc/core_cm4.h:1816:22:__NVIC_SetPriority	2
+../Src/timer.c:7:6:timer_startOneShot	1
+../Src/timer.c:34:6:TIM2_IRQHandler	4
