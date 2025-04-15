@@ -1,0 +1,9 @@
+../Inc/core_cm4.h:1688:22:__NVIC_EnableIRQ	2
+../Inc/core_cm4.h:1816:22:__NVIC_SetPriority	2
+../Src/serial.c:52:6:SerialInitialise	6
+../Src/serial.c:99:6:SerialOutputChar	2
+../Src/serial.c:106:6:SerialPrintPrompt	2
+../Src/serial.c:116:6:SerialOutputString	2
+../Src/serial.c:131:6:SerialReceiveChar	6
+../Src/serial.c:161:6:enable_serial_interrupt	1
+../Src/serial.c:172:6:USART1_EXTI25_IRQHandler	2

@@ -1,0 +1,7 @@
+../Src/serial.c:53:6:SerialInitialise	32	static
+../Src/serial.c:100:6:SerialSetTermChar	16	static
+../Src/serial.c:106:6:SerialOutputChar	16	static
+../Src/serial.c:113:6:SerialPrintPrompt	16	static
+../Src/serial.c:123:6:SerialOutputString	16	static
+../Src/serial.c:132:6:SerialInputReceive	24	static
+../Src/serial.c:162:6:SerialPrintLastLength	80	static
