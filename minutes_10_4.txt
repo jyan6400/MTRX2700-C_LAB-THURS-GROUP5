@@ -14,7 +14,21 @@ Minute Taker: Jason Yang
 | Saksham        |         | 
 | Jason          | ✅      | 
 
+NOTE: Meeting organised for next week to complete integration, whilst everyone is working on their own coding tasks during their own time
+
 ---
 
 ## 2. Objectives for Week 2
 
+
+
+
+## 7. Action Items for Next Week
+
+| Task                                          | Owner       | Due |
+|-----------------------------------------------|-------------|-----|
+| Complete assigned reference material review    | All         | Week 2 |
+| Start implementation of 1.3.2 string functions | Assigned by role | Week 2 |
+| Update README with finalised project structure | Jason    | Week 2 |
+| Push all working files to GitHub              | All         | End of each lab |
+| Document roles clearly in repo                | Jason    | Week 2 |
