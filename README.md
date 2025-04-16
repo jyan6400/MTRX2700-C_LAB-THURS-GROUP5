@@ -49,3 +49,31 @@ The goal is to demonstrate modular, low-level embedded development using:
 | Final Integration (`1.7.2a.s`) | Palindrome check → Caesar Cipher → UART → LED vowel/consonant display       | Type message on PC, verify LED pattern changes every 500ms on MCU2                   | System fully integrated and functions as expected    |       |
 
 
+## Exercise 1
+### Parts a, b, c
+### Purpose  
+- Encapsulates digital I/O functionality  
+- Abstracts register access via clean C functions  
+- Enables interrupt-driven LED control  
+
+### Features  
+- Initializes LEDs (PE8–PE15) and button (PA0)  
+- Supports function pointer callback on button press  
+- Provides clean API:
+  - `dio_init(void (*callback)(void));`
+  - `dio_setLED(int index, bool state);`
+  - `dio_toggleLED(int index);`
+  - `uint8_t dio_getLEDState(void);`
+
+
+### Basic Setup
+1. Flash to STM32F3 Discovery board
+2. Observe PE8 LED ON at startup
+3. Press USER button (PA0)
+4. On each press, LED pattern shifts right (chase style)
+
+### ✅ Expected Output
+- **Initial state**: PE8 ON, others OFF
+- **Each button press**: next LED lights up (PE8 → PE9 → PE10...) 
+- **Wraps around** after PE15
+
