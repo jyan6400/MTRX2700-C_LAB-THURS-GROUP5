@@ -10,8 +10,8 @@
 
 | Name           | Role                         | Responsibilities                                                                                         |
 |----------------|------------------------------|----------------------------------------------------------------------------------------------------------|
-| Saksham        | Systems & Comms Lead         | UART interrupt architecture, string parsing, integration of callback handlers                            |
-| Shirui         | I/O & Control Lead           | LED I/O logic, timer abstraction layer, debouncing, button callbacks                                     |
+| Saksham        | Systems & Comms Lead         | Exercise 1, Exercise 3, Integration                                                                      |
+| Shirui         | I/O & Control Lead           | Exercise 2, Integration                                                                                  |
 | Jason          | DevOps & Architecture Lead   | Project structure, modular API design, documentation, integration testing, Meeting Minutes               |
 
 ---
