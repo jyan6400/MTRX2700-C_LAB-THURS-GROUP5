@@ -1,4 +1,4 @@
-# MTRX2700 Week 2 Lab Meeting Minutes  
+# MTRX2700 Week 7 Lab Meeting Minutes  
 Date: 06/03/2025  
 Location: Mechatronics Dry Lab  
 Group Name: S4-G2 
@@ -18,17 +18,17 @@ NOTE: Meeting organised for next week to complete integration, whilst everyone i
 
 ---
 
-## 2. Objectives for Week 2
-
-
-
+## 2. Objectives for Week 7
+- Finish off code for Digital I/O Module
+- Finish off code for Serial Interface Module
+- Finish off code for Timer Interface Module
 
 ## 7. Action Items for Next Week
 
 | Task                                          | Owner       | Due |
 |-----------------------------------------------|-------------|-----|
-| Complete assigned reference material review    | All         | Week 2 |
-| Start implementation of 1.3.2 string functions | Assigned by role | Week 2 |
-| Update README with finalised project structure | Jason    | Week 2 |
-| Push all working files to GitHub              | All         | End of each lab |
-| Document roles clearly in repo                | Jason    | Week 2 |
+| Digital I/O                                   | Assigned by role | Week 8 |
+| Serial Interface                              | Assigned by role | Week 8 |
+| Timer Interface                               | Assigned by role | Week 8 |
+| Update README with finalised project structure | Jason    | Week 8 |
+| Push all working files to GitHub              | All         | Week 8 |
