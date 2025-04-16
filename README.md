@@ -77,3 +77,29 @@ The goal is to demonstrate modular, low-level embedded development using:
 - **Each button press**: next LED lights up (PE8 → PE9 → PE10...) 
 - **Wraps around** after PE15
 
+
+### Part d
+### Purpose  
+- Restricts LED update frequency using a hardware timer  
+- Ensures non-blocking LED state changes via interrupts  
+
+### Features  
+- Implements timer (TIM2) to control minimum interval between LED updates  
+- Uses interrupts to asynchronously manage LED state updates  
+- Maintains encapsulation and modularity from previous exercises  
+- Provides clean API:
+  - `void timer_init(uint16_t ms);`
+  - `uint8_t timer_check_flag(void);`
+  - `void timer_clear_flag(void);`
+
+### Basic Setup
+1. Flash to STM32F3 Discovery board
+2. System initializes with all LEDs OFF
+3. Press USER button (PA0)
+4. LEDs change state only if 1000 ms (1 second) elapsed since last update
+
+### ✅ Expected Output
+- **Initial state**: All LEDs OFF
+- **Button press**: LEDs update in chase sequence (PE8 → PE9 → PE10...) but **only once per second**
+- **No immediate consecutive LED changes**: Presses within the 1-second interval **do not affect LED states**
+
