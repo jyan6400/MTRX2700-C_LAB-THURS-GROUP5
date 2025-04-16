@@ -1,0 +1,7 @@
+../Src/serial.c:53:6:SerialInitialise	6
+../Src/serial.c:100:6:SerialSetTermChar	1
+../Src/serial.c:106:6:SerialOutputChar	2
+../Src/serial.c:113:6:SerialOutputString	2
+../Src/serial.c:122:6:SerialPrintPrompt	2
+../Src/serial.c:132:6:SerialInputReceive	4
+../Src/serial.c:164:6:SerialPrintLastLength	2
