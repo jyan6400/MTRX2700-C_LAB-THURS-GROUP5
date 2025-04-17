@@ -1,1 +1,63 @@
+# 📝 Integration Task – Group Meeting Minutes (Integration Debugging & Final Testing)
+
+**Date:** 17 April 2025  
+**Attendees:** Jason, Saksham, Shirui  
+**Project:** CLAB Exercise 4 – Final Integration  
+**Minutes file:** `minutes/minutes_17_4.txt`
+
+---
+
+## 1. Objective
+
+To complete final debugging and full-system testing for Exercise 4 Integration. This includes ensuring the correct execution of all command inputs (`led`, `serial`, `oneshot`, `timer`), functional LED display and timer behavior, and validation of button-triggered events before Week 8 presentation.
+
+---
+
+## 2. Final Testing Summary
+
+| Component                                | Test Performed                                                | Result  | Notes                                                                 |
+|------------------------------------------|----------------------------------------------------------------|---------|-----------------------------------------------------------------------|
+| UART command → LED pattern               | Input `led 11001100#` displays correct pattern on PE8–PE15     | ✅      | LED positions verified left to right (PE15 = index 0)                |
+| UART command → echo string               | `serial Hello World#` echoes message with correct formatting   | ✅      | Handles null argument and spacing edge cases                         |
+| UART command → `oneshot 500#`            | Flashes all LEDs once after 500 ms                             | ✅      | Uses TIM2 one-shot mode with correct timing                          |
+| UART command → `timer 1000#`             | LEDs blink in 1s intervals                                     | ✅      | Conflicts avoided using `timer_stop()` before start                  |
+| Button press → trigger callback          | EXTI0 triggers ISR; ready for user-defined action              | ✅      | Debounced and tested manually                                        |
+| Simultaneous command execution           | Stress test with multiple commands in sequence                 | ✅      | No crashes or overlap; buffers cleared between calls                 |
+| Edge-case input (e.g. `led 1234#`)       | Handled with error message and ignored                         | ✅      | Input validation logic working as expected                           |
+
+---
+
+## 3. Final Repository Updates
+
+| Folder     | Updates Made                          | Notes                                       |
+|------------|----------------------------------------|---------------------------------------------|
+| `src/`     | Minor cleanup in `command.c` and `main.c` | Removed debug prints, added `leds_off()` safety |
+| `minutes/` | `minutes_17_4.txt` created              | Final testing session and outcomes logged   |
+| `README.md`| Updated modules, testing plans, and diagram | Ready for Week 8 submission and demo        |
+
+---
+
+## 4. What Now Works End-to-End
+
+- Full input pipeline: user → UART → buffer → parser → command module
+- Command logic routes cleanly to timer and LED modules
+- Interrupt-safe operation confirmed (no race conditions observed)
+- Final timer precision within expected bounds
+- All team members completed assigned testing and merged changes
+
+---
+
+## 5. Group Reflections
+
+- Clear modular separation improved traceability and fixes
+- Integration testing helped uncover subtle timing and debounce issues
+- Documenting command paths in the coding diagram simplified debugging
+- Codebase now demo-ready, aligned with project spec
+
+
+---
+
+**Next Meeting:**  
+✅ *Final Week 5 Lab Demo*  
+📂 *Final minutes saved as:* `minutes/minutes_25_3.txt`
 
