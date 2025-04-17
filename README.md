@@ -70,7 +70,7 @@ The goal is to demonstrate modular, low-level embedded development using:
 |                                     | Edge case: input symbols and whitespace                                              | Send string with special characters                                               | Non-alphabetic characters are skipped or ignored safely                       | ✅        |
 
 
-Example Test Cases
+**Example Test Cases**
 - Exercise 1A–C: Press PA0 repeatedly, observe LED shift right
 - Exercise 1D: Press PA0 rapidly, LEDs only update every 1s
 - Exercise 2A: Press PA0, see Hello UART in serial terminal
