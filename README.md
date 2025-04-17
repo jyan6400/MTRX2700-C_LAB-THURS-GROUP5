@@ -148,7 +148,23 @@ Flow Example:
 4. command.c invokes: timer_init(500, blink_toggle_all)
 5. blink_toggle_all() toggles LED state every 500ms
 
+## Exercise 4 Integration – Testing Plan
 
+| **Module**                          | **Test Description**                                                                 | **Method**                                                                         | **Expected Outcome**                                                        | **Status** |
+|-------------------------------------|---------------------------------------------------------------------------------------|------------------------------------------------------------------------------------|--------------------------------------------------------------------------------|------------|
+| **System Init (main.c)**           | Ensure system starts correctly with UART prompt and LED state reset                  | Flash code, open terminal (115200 baud), check prompt and LED status              | Prompt shows: `"User input interface (end with '#'):"`; All LEDs OFF        | ✅          |
+| **UART – Serial Echo**             | Verify `serial <msg>#` command echoes the message back                               | Input `serial hello world#`                                                       | Output: `hello world` on new line                                            | ✅          |
+| **UART – Error Cases**             | Check command parsing handles malformed input                                        | Input `led#`, `oneshot#`, `timer#`, `unknown#`                                    | Correct error messages returned                                              | ✅          |
+| **LED – Pattern Setting**          | Test `led <bit_pattern>#` sets LEDs correctly                                        | Input `led 10101010#`, `led 11111111#`, `led 00000000#`                           | LEDs match bit pattern                                                       | ✅          |
+| **LED – Invalid Pattern**          | Ensure `led` command validates 8-bit binary                                          | Input `led 12345678#`, `led 10101#`                                               | Error: `led pattern must be 0/1` or `expects 8-bit binary`                   | ✅          |
+| **Timer – One-Shot Flash**         | Test `oneshot <delay>#` flashes all LEDs once after delay                            | Input `oneshot 1000#`                                                             | After 1s, all LEDs flash on briefly, then off                                 | ✅          |
+| **Timer – Periodic Blink**         | Test `timer <period>#` toggles all LEDs at interval                                  | Input `timer 500#`, then `timer 200#`                                             | All LEDs blink every 500ms, then every 200ms                                 | ✅          |
+| **Timer – Override Test**          | Confirm timer stops on `led`/`oneshot` commands                                       | Input `timer 500#` → `led 00001111#` → `oneshot 300#`                             | LED updates override previous timer actions                                  | ✅          |
+| **Button Interrupt (optional)**    | Test EXTI0 interrupt on PA0 (if callback is used)                                     | Press button after setting a callback (e.g., blink one LED)                      | LED toggles or callback executes                                             | ✅          |
+| **Buffer Overflow**                | Ensure input buffer handles overflow gracefully                                      | Paste >1000 characters without `#`, then input valid command                      | Error: `Buffer Overflow!`; System continues to work                          | ✅          |
+
+
+---
 
 ## Instructions for Use (STM32F3 Discovery Board)
 Requirements:
