@@ -147,7 +147,7 @@ Flow Example:
 3. For_receive_done is called with parsed args
 4. command.c invokes: timer_init(500, blink_toggle_all)
 5. blink_toggle_all() toggles LED state every 500ms
-
+```
 
 
 ---
@@ -169,38 +169,6 @@ Flow Example:
 | **Timer – Override Behavior**       | Ensure timer stops when another LED command is issued                                | Send: `timer 500#` → `led 11110000#` → `oneshot 200#`                             | Periodic blinking stops; LEDs reflect new command                            | ☐        |
 | **Interrupt – Button (Optional)**   | If used: test PA0 external interrupt triggering callback                             | Press button after `dio_init(custom_callback)`                                   | Executes callback e.g., toggles LED or prints to terminal                    | ☐        |
 | **UART – Buffer Overflow**          | Ensure large input doesn’t crash system                                              | Paste >1000 characters without `#`, then input valid command                     | Prints `[ERROR] Buffer Overflow!`; normal input resumes                      | ☐        |
-
-
-
-## ✅ Exercise 4 Integration – Testing Plan
-
-This table outlines a structured testing strategy for verifying the correct integration of modules (dio, serial, timer, and command) in Exercise 4.
-
-| **Module**                          | **Test Description**                                                                 | **Method**                                                                         | **Expected Outcome**                                                        | **Status** |
-|-------------------------------------|---------------------------------------------------------------------------------------|------------------------------------------------------------------------------------|--------------------------------------------------------------------------------|------------|
-| **System Init (main.c)**           | Ensure system starts correctly with UART prompt and LED state reset                  | Flash code, open terminal (115200 baud), check prompt and LED status              | Prompt shows: `"User input interface (end with '#'):"`; All LEDs OFF        | ☐          |
-| **UART – Serial Echo**             | Verify `serial <msg>#` command echoes the message back                               | Input `serial hello world#`                                                       | Output: `hello world` on new line                                            | ☐          |
-| **UART – Error Cases**             | Check command parsing handles malformed input                                        | Input `led#`, `oneshot#`, `timer#`, `unknown#`                                    | Correct error messages returned                                              | ☐          |
-| **LED – Pattern Setting**          | Test `led <bit_pattern>#` sets LEDs correctly                                        | Input `led 10101010#`, `led 11111111#`, `led 00000000#`                           | LEDs match bit pattern                                                       | ☐          |
-| **LED – Invalid Pattern**          | Ensure `led` command validates 8-bit binary                                          | Input `led 12345678#`, `led 10101#`                                               | Error: `led pattern must be 0/1` or `expects 8-bit binary`                   | ☐          |
-| **Timer – One-Shot Flash**         | Test `oneshot <delay>#` flashes all LEDs once after delay                            | Input `oneshot 1000#`                                                             | After 1s, all LEDs flash on briefly, then off                                 | ☐          |
-| **Timer – Periodic Blink**         | Test `timer <period>#` toggles all LEDs at interval                                  | Input `timer 500#`, then `timer 200#`                                             | All LEDs blink every 500ms, then every 200ms                                 | ☐          |
-| **Timer – Override Test**          | Confirm timer stops on `led`/`oneshot` commands                                       | Input `timer 500#` → `led 00001111#` → `oneshot 300#`                             | LED updates override previous timer actions                                  | ☐          |
-| **Button Interrupt (optional)**    | Test EXTI0 interrupt on PA0 (if callback is used)                                     | Press button after setting a callback (e.g., blink one LED)                      | LED toggles or callback executes                                             | ☐          |
-| **Buffer Overflow**                | Ensure input buffer handles overflow gracefully                                      | Paste >1000 characters without `#`, then input valid command                      | Error: `Buffer Overflow!`; System continues to work                          | ☐          |
-
-| **Module**                          | **Test Description**                                                                 | **Method**                                                                         | **Expected Outcome**                                                        | **Status** |
-|-------------------------------------|---------------------------------------------------------------------------------------|------------------------------------------------------------------------------------|--------------------------------------------------------------------------------|------------|
-| **System Init (main.c)**           | Ensure system starts correctly with UART prompt and LED state reset                  | Flash code, open terminal (115200 baud), check prompt and LED status              | Prompt shows: `"User input interface (end with '#'):"`; All LEDs OFF        | ✅          |
-| **UART – Serial Echo**             | Verify `serial <msg>#` command echoes the message back                               | Input `serial hello world#`                                                       | Output: `hello world` on new line                                            | ✅          |
-| **UART – Error Cases**             | Check command parsing handles malformed input                                        | Input `led#`, `oneshot#`, `timer#`, `unknown#`                                    | Correct error messages returned                                              | ✅          |
-| **LED – Pattern Setting**          | Test `led <bit_pattern>#` sets LEDs correctly                                        | Input `led 10101010#`, `led 11111111#`, `led 00000000#`                           | LEDs match bit pattern                                                       | ✅          |
-| **LED – Invalid Pattern**          | Ensure `led` command validates 8-bit binary                                          | Input `led 12345678#`, `led 10101#`                                               | Error: `led pattern must be 0/1` or `expects 8-bit binary`                   | ✅          |
-| **Timer – One-Shot Flash**         | Test `oneshot <delay>#` flashes all LEDs once after delay                            | Input `oneshot 1000#`                                                             | After 1s, all LEDs flash on briefly, then off                                 | ✅          |
-| **Timer – Periodic Blink**         | Test `timer <period>#` toggles all LEDs at interval                                  | Input `timer 500#`, then `timer 200#`                                             | All LEDs blink every 500ms, then every 200ms                                 | ✅          |
-| **Timer – Override Test**          | Confirm timer stops on `led`/`oneshot` commands                                       | Input `timer 500#` → `led 00001111#` → `oneshot 300#`                             | LED updates override previous timer actions                                  | ✅          |
-| **Button Interrupt (optional)**    | Test EXTI0 interrupt on PA0 (if callback is used)                                     | Press button after setting a callback (e.g., blink one LED)                      | LED toggles or callback executes                                             | ✅          |
-| **Buffer Overflow**                | Ensure input buffer handles overflow gracefully                                      | Paste >1000 characters without `#`, then input valid command                      | Error: `Buffer Overflow!`; System continues to work                          | ✅          |
 
 
 ---
