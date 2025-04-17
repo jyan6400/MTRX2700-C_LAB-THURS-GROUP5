@@ -1,6 +1,0 @@
-../Inc/core_cm4.h:1688:22:__NVIC_EnableIRQ	2
-../Inc/core_cm4.h:1816:22:__NVIC_SetPriority	2
-../Src/timer.c:7:13:tim2_start	4
-../Src/timer.c:27:6:timer_init	1
-../Src/timer.c:41:6:timer_oneshot	1
-../Src/timer.c:55:6:TIM2_IRQHandler	3
