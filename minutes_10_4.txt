@@ -23,7 +23,7 @@ NOTE: Meeting organised for next week to complete integration, whilst everyone i
 - Finish off code for Serial Interface Module
 - Finish off code for Timer Interface Module
 
-## 7. Action Items for Next Week
+## 3. Action Items for Next Week
 
 | Task                                          | Owner       | Due |
 |-----------------------------------------------|-------------|-----|
