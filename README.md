@@ -121,7 +121,7 @@ The goal is to demonstrate modular, low-level embedded development using:
                                           | - Setup one-shot delay           | | - Setup periodic callback    |
                                           | - On expire, call flash_all_once | | - On each period, call       |
                                           +----------------------------------+ |   blink_toggle_all           |
-                                                                                 +------------------------------+
+                                                              |                   +------------------------------+
                                                               |                     |
                                 +-----------------------------+---------------------+
                                 |                                                     
