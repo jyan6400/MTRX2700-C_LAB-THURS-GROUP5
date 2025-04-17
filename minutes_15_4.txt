@@ -18,6 +18,80 @@ Minute Taker: Jason Yang
 
 ## 2. Objectives
 - Integration Tasks
+- Cleaning Up the Git Repo
+- README and Other Documentation
+
+---
+
+## 3. Progress Summary
+
+| Integration Component                    | Status | Owner     | Notes                                                                 |
+|------------------------------------------|--------|-----------|-----------------------------------------------------------------------|
+| Command parsing from UART                | ✅     | Shirui     | Fully functional; handles all commands and arguments                  |
+| One-shot and periodic LED control        | ✅     | Saksham     | Integrated via `timer_oneshot()` and `timer_init()`                  |
+| LED pattern display                      | ✅     | Saksham     | `led` command updates all LEDs as binary pattern                     |
+| UART double-buffering and echo           | ✅     | Shirui     | Message echo on `serial` command verified                            |
+| Button callback (EXTI0)                  | 🔄     | Shirui    | ISR registered but not yet connected to trigger a specific task      |
+| Full integration testing (command→action)| 🔄     | Jason       | Works for most cases; edge-case bugs under review                    |
+
+---
+
+## 4. Issues Encountered
+
+| Issue                                         | Discussion / Resolution                                             |
+|-----------------------------------------------|----------------------------------------------------------------------|
+| Commands executing simultaneously             | Implemented `timer_stop()` before running any new LED command       |
+| Debouncing for PA0 button press               | Need to introduce software flag / delay in ISR                      |
+| Buffer overflow on rapid UART input           | Added size check and error prompt in `SerialInputReceive()`         |
+| LED blink timer interfering with LED pattern  | Reset LEDs before applying new pattern via `leds_off()`             |
+
+---
+
+## 5. Repository Updates
+
+| Folder     | Updates Made                              | Notes                                        |
+|------------|--------------------------------------------|----------------------------------------------|
+| `src/`     | Final `main.c` and `command.c` merged      | Full integration using modular API structure |
+| `inc/`     | Interfaces cleaned and documented          | Consistent across all modules                |
+| `minutes/` | `minutes_15_4.txt` added                   | Summary of meeting, task status, action plan |
+
+---
+
+## 6. What Works So Far
+
+- UART input processed into commands: `led`, `serial`, `oneshot`, `timer`
+- Command parser correctly routes logic to appropriate modules
+- LED control via binary string pattern verified
+- One-shot LED flash and periodic blinking work with accurate timing
+- Serial input/output with terminator (‘#’) logic robust under test
+
+---
+
+## 7. Immediate Next Steps (Pre Demo)
+
+| Task                                             | Owner     | Deadline             |
+|--------------------------------------------------|-----------|----------------------|
+| Test PA0 button trigger for timer or reset       | Jiaze     | Before next session  |
+| Perform full integration run-through             | All       | Before Week 5 demo   |
+| Polish README and functional diagram             | Jason     | Before Week 5 demo   |
+| Run edge-case UART command tests                 | Oscar     | Before next session  |
+
+---
+
+## 8. Group Reflections
+
+- Modular development allowed fast integration and isolated debugging
+- Serial-based command interface added valuable flexibility for testing
+- Real-time interrupt + timer integration is functioning well
+- Confident that integration will be complete before Week 5 lab presentation
+
+---
+
+**Next Meeting:**  
+📍 *Integration Debugging & Final Testing*  
+🗓️ *Before Week 8 demo*  
+📝 *Minutes file:* `minutes/minutes_15_4.txt`
+
 
 
 
