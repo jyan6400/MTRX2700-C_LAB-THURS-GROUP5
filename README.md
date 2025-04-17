@@ -71,39 +71,6 @@ The goal is to demonstrate modular, low-level embedded development using:
 
 
 
-Module | Test Description | Method | Expected Outcome | Status
-Exercise 1 (A,B,C) – LED Control & Button Interface | Verify LED output mode and state updating | Set various bitmasks via set_led_state(), observe physical LEDs | LEDs reflect correct bit pattern as expected | ✅
- | Confirm button interrupt and callback trigger | Register button_callback, press button on PE0 | Callback function executes (e.g., LED shifts) | ✅
- | Validate state encapsulation with get_led_state() | Set LED pattern, retrieve via getter | Retrieved value matches last set pattern | 
-Exercise 1 (D) – Timed LED Updates | Ensure LED changes occur on hardware timer rather than blocking delay | Use timer with registered LED pattern update callback | LED toggles at defined intervals with no UI delay | ✅
- | Confirm immediate return from set function | Set LED state while timer running | No polling delay; system remains responsive | ✅
-Exercise 2 (A) – UART Transmit on Button Press | Send string from STM32 to PC over UART | Connect serial terminal (PuTTY/Tera Term), press button | String appears in terminal upon button press | ✅
-Exercise 2 (B) – UART Receive into Buffer | Store typed string into buffer until CR (0x0D) | Send string via terminal, inspect buffer via debugger | Characters stored correctly until terminating character | ✅
-Exercise 2 (C) – Clock Update for Baud Rate | Test UART after system clock/PLL reconfiguration | Adjust PLL, verify transmission using logic analyzer or terminal | Baud rate still valid; messages received correctly | ✅
-Exercise 2 (D) – UART Port Forwarding | Verify message pass-through from PC → MCU1 → MCU2 | Chain UART1 and UART2 on 2 boards, observe forwarded message | Full message appears on MCU2 from PC | ✅
-Exercise 3 (A) – Regular Interval Callback | Trigger callback function repeatedly on fixed interval | Register callback with interval (e.g., 500ms), blink LED | Callback executes periodically based on set time | ✅
-Exercise 3 (B) – Getter/Setter Encapsulation | Get and set timer period externally while keeping internals private | Use set_period() and get_period(), attempt direct access | Period adjustable only via interface; timer module is encapsulated | ✅
-Exercise 3 (C) – One-Shot Timer | Trigger a single delayed callback after defined ms | Set one-shot delay with callback, observe LED or debugger | Callback occurs once and doesn’t repeat | ✅
-Exercise 4: Final Integration | End-to-end test: Palindrome → Caesar → UART → LED display | Type message in terminal → check output on MCU2 LEDs | Palindrome is encrypted and decoded; vowel/consonant counts shown at 500ms | ✅
- | Test non-palindrome message handling | Send non-palindrome from PC | Message forwarded as-is to MCU2 | ✅
- | Edge case: input symbols and whitespace | Send string with special characters | Non-alphabetic characters are skipped or ignored safely | ✅
-
-
-| Module        | Test Description                                                                 | Method                                                                                 | Expected Outcome                                      | Status  |
-|---------------|----------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|------------------------------------------------------|---------|
-| String Functions (`1.3.2/`) | Test conversion to uppercase/lowercase, palindrome check, and Caesar cipher  | Manually inspect output in memory/registers via debugger                              | Correct string manipulation and transformations      | ✅      |
-| LED Control (`1.4.2/`)     | Test bitmask patterns, toggle LED logic with button input, and display counts | Observe LED behavior for various input patterns                                       | LEDs match bitmask patterns and respond to input     |       |
-| UART Send (`1.5.2a.s`)     | Transmit string on button press                                              | Connect board to PC, use serial monitor (e.g., Tera Term / PuTTY)                    | String is sent when button is pressed                |       |
-| UART Receive (`1.5.2b.s`)  | Receive string until termination character                                   | Type into serial monitor and observe memory buffer updates                           | Full string stored until terminator is entered       |       |
-| Clock Update (`1.5.2c.s`)  | Test updated baud rate after clock frequency change                          | Measure UART timing with oscilloscope or observe continued correct transmission       | UART works seamlessly after speed change             |       |
-| UART Read/Resend (`1.5.2d.s`) | Echo received UART input                                                      | Send a message and verify echo on serial terminal                                    | Same message is echoed back                          |       |
-| Port Forwarding (`1.5.2e.s`) | Forward message from PC to MCU2 via MCU1                                      | Chain 2 boards and verify message is passed through                                  | Message from PC is received on MCU2                  |       |
-| Timer Delay (`1.6.2a.s`)   | Delay using hardware timer and multiplier constant                            | Scope or LED blink timing measurement                                                 | Delay corresponds to programmed microsecond count    |       |
-| Prescaler Config (`1.6.2b.s`) | Validate 0.1ms delay using prescaler                                         | Count LED toggles in 1s interval                                                      | ~10 toggles per second observed                      |       |
-| Timer Preload (`1.6.2c.s`) | Validate preload-based accurate timer                                         | Use scope or loop LED toggling with preload delay                                    | Consistent delay per iteration                       |       |
-| Final Integration (`1.7.2a.s`) | Palindrome check → Caesar Cipher → UART → LED vowel/consonant display       | Type message on PC, verify LED pattern changes every 500ms on MCU2                   | System fully integrated and functions as expected    |       |
-
-
 ## Exercise 1
 ### Parts a, b, c
 ### Purpose  
