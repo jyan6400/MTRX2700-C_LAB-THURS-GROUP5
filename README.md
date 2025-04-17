@@ -55,23 +55,14 @@ The goal is to demonstrate modular, low-level embedded development using:
 |                                     | Validate state encapsulation with `get_led_state()`                                 | Set LED pattern, retrieve via getter                                               | Retrieved value matches last set pattern                                      | ✅        |
 | **Exercise 1 (D)** – Timed LED Updates  | Ensure LED changes occur on hardware timer rather than blocking delay                | Use timer with registered LED pattern update callback                             | LED toggles at defined intervals with no UI delay                             | ✅        |
 |                                     | Confirm immediate return from set function                                           | Set LED state while timer running                                                  | No polling delay; system remains responsive                                   | ✅        |
-| **Exercise 2 (A)** – UART Receive (Polling)              | Test blocking UART receive using `SerialInputReceive()` until terminator   | Manually type message in serial terminal ending with '#' and observe echo                 | Message is received only after terminator is entered                                  | ✅         |
-| **Exercise 2 (B)** — UART Receive (Callback)            | Test callback-based reception once full message is received                 | Register a custom `completion_function()` that prints received string                     | Callback is triggered with correct buffer contents after terminator                   | ✅         |
-| **Exercise 2 (C)** — UART Receive (Interrupt-Based)      | Test RX interrupt-based input system with double buffering                  | Enable `Enable_Serial_Interrupt()`, observe real-time reception in ps_buffer              | RX works without blocking, For_receive_done() triggered on terminator                 | ✅         |
-| **Exercise 2 (D)** — UART Transmit (Interrupt + Buffer)  | Test TX interrupt-based non-blocking output                                 | Send long strings via `SerialOutputString()` while simultaneously receiving input         | Output does not block input; transmission is queued and completed via ISR             | ✅         |
+| **Exercise 2 (A)** – UART Polling Receive           | Test polling-based UART reception until terminator                                  | Manually type a message ending with `#`; observe echo output on serial terminal   | Full message printed after `#`; buffer resets; error on >1000 characters        | ✅       |
+| **Exercise 2 (B)** – UART with Callback (Length)    | Test callback-based reception with message length reporting                         | Send message ending with `#`; observe echo and printed length periodically        | Message echoed back + "Last length: X" printed at intervals                     | ✅       |
+| **Exercise 2 (C)** – RX Interrupt, Non-blocking     | Test interrupt-driven, non-blocking UART reception                                  | Send messages while main loop idle; observe output without polling                | Message echoed once `#` is received; runs concurrently with other logic         | ✅       |
+| **Exercise 2 (D)** – TX Interrupt & Double Buffer   | Test interrupt-driven transmission and concurrent TX/RX handling                    | Send long message and observe echo; verify responsiveness during printing         | TX uses interrupt buffer; input remains responsive during long outputs          | ✅       |
 | **Exercise 3 (A)** – Regular Interval Callback | Trigger callback function repeatedly on fixed interval                               | Register callback with interval (e.g., 500ms), blink LED                          | Callback executes periodically based on set time                              | ✅        |
 | **Exercise 3 (B)** – Getter/Setter Encapsulation | Get and set timer period externally while keeping internals private                  | Use `set_period()` and `get_period()`, attempt direct access                      | Period adjustable only via interface; timer module is encapsulated            | ✅        |
 | **Exercise 3 (C)** – One-Shot Timer     | Trigger a single delayed callback after defined ms                                   | Set one-shot delay with callback, observe LED or debugger                         | Callback occurs once and doesn’t repeat                                        | ✅        |
 
-
-**Example Test Cases**
-- Exercise 1A–C: Press PA0 repeatedly, observe LED shift right
-- Exercise 1D: Press PA0 rapidly, LEDs only update every 1s
-- Exercise 2A: Press PA0, see Hello UART in serial terminal
-- Exercise 2B: Type test<Enter> in terminal, check buffer in debugger
-- Exercise 2D: Chain two boards using UART TX/RX → Message forwarded
-- Exercise 3A–C: Timer-controlled LED behavior, observe toggles via PE8
-- Exercise 4: Full pipeline – input from PC, cipher, LED vowel/consonant display
 
 ## Project Module Descriptions
 
