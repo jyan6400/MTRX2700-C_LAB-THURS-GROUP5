@@ -72,6 +72,23 @@ The goal is to demonstrate modular, low-level embedded development using:
 
 
 ## Project Module Explanation
+
+## 📦 Module Descriptions
+
+| **Module** | **Purpose** | **Features** | **Basic Setup** | **✅ Expected Output** |
+|------------|-------------|--------------|------------------|------------------------|
+| **Exercise 1 (A,B,C)** – LED Control & Button Interface | Encapsulates digital I/O functionality and supports interrupt-based LED updates | - Initializes PE8–PE15 (LEDs), PA0 (button) <br> - Function pointer callback on button press <br> - Clean API: `dio_init()`, `dio_setLED()`, `dio_toggleLED()`, `dio_getLEDState()` | 1. Flash to STM32F3 <br> 2. Observe PE8 ON <br> 3. Press PA0 → LED chase | **Initial:** PE8 ON <br> **Each press:** PE8→PE9→...→PE15 <br> **Wraps** to PE8 |
+| **Exercise 1 (D)** – Timed LED Updates | Restricts LED update frequency using TIM2 timer | - Non-blocking timer-based update gating <br> - Clean API: `timer_init()`, `timer_check_flag()`, `timer_clear_flag()` | 1. Flash to board <br> 2. Press PA0 repeatedly <br> 3. LEDs update only every 1s | **Initial:** All OFF <br> **Button press:** One LED toggles per second max |
+| **Exercise 2 (A)** – UART Transmit on Button Press | Transmit fixed message over UART1 when PA0 is pressed | - UART1 @ 9600 baud <br> - `uart1_init()`, `uart1_send()` | 1. Connect STM32 to PC <br> 2. Open PuTTY/TeraTerm <br> 3. Press PA0 | **On press:** `"Hello UART"` appears <br> **No lag or corruption** |
+| **Exercise 2 (B)** – UART Receive into Buffer | Store UART input until carriage return (0x0D) | - Polling UART receive into buffer <br> - API: `uart1_receive()` | 1. Open terminal <br> 2. Type string + CR <br> 3. Inspect buffer | **Input:** `"test<CR>"` → Buffer: `'t','e','s','t','\0'` |
+| **Exercise 2 (C)** – Clock Update for Baud Rate | Reconfigures system clock and verifies UART consistency | - PLL clock increase <br> - BRR re-calculation <br> - `clock_init()`, `uart1_reconfig_baud()` | 1. Flash code <br> 2. Update clock <br> 3. Verify UART output | **Terminal sees** correct output post-clock update, no glitches |
+| **Exercise 2 (D)** – UART Port Forwarding | Relays UART1 input → UART2 output across 2 boards | - MCU1: UART1 → UART2 <br> - MCU2: UART2 receive <br> - `uart1_receive()`, `uart2_send()` | 1. Wire two STM32s (TX↔RX) <br> 2. Type message from PC <br> 3. MCU2 reacts | **PC→MCU1→MCU2** works seamlessly <br> Message forwarded intact |
+| **Exercise 3 (A)** – Regular Interval Callback | Executes callback at fixed interval using TIM2 | - Uses TIM2 interrupts <br> - API: `timer_init(interval, callback)` | 1. Flash with LED toggle as callback <br> 2. Observe blinking | **PE8 blinks** every 500ms <br> No blocking |
+| **Exercise 3 (B)** – Getter/Setter Encapsulation | Encapsulates timer period via accessors | - Internal static period <br> - `timer_set_period()`, `timer_get_period()` | 1. Use setter to change interval <br> 2. Observe LED blink rate | **Faster blinking** post change <br> External access blocked |
+| **Exercise 3 (C)** – One-Shot Timer | Triggers single delayed event, no repetition | - Uses TIM2, disables after fire <br> - API: `timer_oneshot(delay, callback)` | 1. Call oneshot with LED toggle <br> 2. Wait 1s | **Single LED toggle** after 1s <br> No repeats |
+| **Exercise 4** – Final Integration | Combines UART, cipher, and LED modules across 2 MCUs | - MCU1: Palindrome check → Caesar → UART2 <br> - MCU2: Decode → Count vowels/consonants → LED display | 1. Type `"Racecar"` to MCU1 <br> 2. MCU2 LEDs toggle counts at 500ms | **Palindrome:** Encoded → Decoded <br> **Non-palindrome:** Forwarded <br> **Alternating LED** counts |
+
+
 ###  **Exercise 1 (A,B,C)** – LED Control & Button Interface
 ### Purpose  
 - Encapsulates digital I/O functionality  
@@ -125,3 +142,238 @@ The goal is to demonstrate modular, low-level embedded development using:
 - **Button press**: LEDs update in chase sequence (PE8 → PE9 → PE10...) but **only once per second**
 - **No immediate consecutive LED changes**: Presses within the 1-second interval **do not affect LED states**
 
+Exercise 2 (A) – UART Transmit on Button Press
+Purpose
+Transmits a predefined string over UART1 when a button is pressed
+
+Demonstrates interrupt-triggered data transmission
+
+Features
+Initializes UART1 for 9600 baud transmission
+
+Uses PA0 (USER button) as the trigger source
+
+Transmits fixed message (e.g., "Hello UART\r\n") to PC terminal
+
+Provides clean API:
+
+void uart1_init(void);
+
+void uart1_send(char* message);
+
+Basic Setup
+Flash program and connect STM32F3 board to PC via USB
+
+Open PuTTY / Tera Term on correct COM port (9600 baud)
+
+Press button (PA0) to trigger UART send
+
+✅ Expected Output
+Button press → "Hello UART" appears in serial monitor
+
+Repeated presses → Message retransmits with no lag or corruption
+
+Exercise 2 (B) – UART Receive into Buffer
+Purpose
+Stores incoming serial characters into a local buffer until termination character (CR)
+
+Enables asynchronous string input from PC
+
+Features
+Receives data over UART1 using polling
+
+Stores characters into ring buffer
+
+Detects termination on 0x0D (carriage return)
+
+Provides clean API:
+
+void uart1_receive(char* buffer);
+
+Basic Setup
+Connect STM32F3 to PC with serial terminal open
+
+Type "example string<CR>"
+
+Inspect memory buffer in debugger
+
+✅ Expected Output
+Input: "test<CR>"
+
+Buffer result: ['t','e','s','t','\0']
+
+Stops receiving after 0x0D
+
+Exercise 2 (C) – Clock Update for Baud Rate
+Purpose
+Verifies UART stability after increasing system clock
+
+Ensures serial communication still functions at higher speeds
+
+Features
+Switches from default internal clock to PLL-based system clock (e.g., 24MHz)
+
+Recalculates UART BRR (baud rate register) accordingly
+
+Provides system clock setup:
+
+void clock_init(void);
+
+void uart1_reconfig_baud(uint32_t baud);
+
+Basic Setup
+Flash to STM32F3 board
+
+Update clock before UART communication starts
+
+Connect serial terminal
+
+Send/receive message
+
+✅ Expected Output
+Terminal sees correct message despite increased clock
+
+No data corruption, confirming baud matches new timing
+
+Exercise 2 (D) – UART Port Forwarding
+Purpose
+Transfers messages from PC → MCU1 → MCU2 over chained UARTs
+
+Demonstrates full-duplex embedded system communication
+
+Features
+MCU1 receives data on UART1 and forwards via UART2
+
+MCU2 receives on UART2 and displays result (e.g., via LEDs or debug)
+
+Provides API on both boards:
+
+MCU1: uart1_receive(); uart2_send();
+
+MCU2: uart2_receive();
+
+Basic Setup
+Chain two STM32 boards with jumper wires (TX↔RX)
+
+Open terminal and type message
+
+Observe MCU2 output
+
+✅ Expected Output
+Message typed on PC → MCU2 reacts (LED blink / buffer log)
+
+End-to-end integrity preserved across both UART hops
+
+Exercise 3 (A) – Regular Interval Callback
+Purpose
+Implements a recurring software timer using TIM2
+
+Invokes callback at defined ms intervals
+
+Features
+Uses TIM2 in interrupt mode
+
+Accepts function pointer as callback handler
+
+Provides API:
+
+void timer_init(uint16_t interval_ms, void (*callback)(void));
+
+Basic Setup
+Flash to board with LED toggle callback
+
+Observe PE8 blinking at 500ms intervals
+
+✅ Expected Output
+LED toggles consistently every 0.5s
+
+No blocking delays; system remains responsive
+
+Exercise 3 (B) – Getter/Setter Encapsulation
+Purpose
+Protects timer interval variable from direct access
+
+Provides controlled access via interface functions
+
+Features
+Internal timer state is static
+
+Provides getters and setters only:
+
+void timer_set_period(uint16_t ms);
+
+uint16_t timer_get_period(void);
+
+Basic Setup
+Use setter in main() to update delay (e.g., from 1000ms → 250ms)
+
+Observe LED blinks faster after update
+
+✅ Expected Output
+Initially slow blink, then accelerates after period is changed
+
+Direct variable access fails if attempted externally
+
+Exercise 3 (C) – One-Shot Timer
+Purpose
+Triggers a one-time event after delay, then stops
+
+Similar to setTimeout() in JavaScript
+
+Features
+Reuses TIM2 with different logic
+
+Disarms timer after callback fires once
+
+API:
+
+void timer_oneshot(uint16_t delay_ms, void (*callback)(void));
+
+Basic Setup
+Call timer_oneshot(1000, led_toggle);
+
+Observe LED toggle once after 1s
+
+No further toggles occur
+
+✅ Expected Output
+Single LED change occurs after delay
+
+No periodic behavior unless rearmed manually
+
+Exercise 4 – Final Integration
+Purpose
+Combines all modules: UART input, Caesar/palindrome processing, LED display
+
+Demonstrates real-world, multi-MCU system integration
+
+Features
+MCU1:
+
+Receives UART message from PC
+
+Checks palindrome → applies Caesar cipher if true
+
+Forwards message to MCU2
+
+MCU2:
+
+Decodes Caesar cipher
+
+Counts vowels/consonants
+
+Displays count via LEDs, alternating every 500ms
+
+Basic Setup
+Connect MCU1 to PC, MCU1 UART2 to MCU2 UART2
+
+Type string: "Racecar" or "Hello"
+
+MCU2 LED shows vowel/consonant count alternating
+
+✅ Expected Output
+Palindrome: Encoded → Decoded → LED count
+
+Non-palindrome: Forwarded → LED count
+
+500ms intervals: LED state alternates correctly
