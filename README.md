@@ -28,7 +28,23 @@ The goal is to demonstrate modular, low-level embedded development using:
 
 ## Project Structure
 
-![Lab Structure](CLABProjectStructure.png)
+## /Exercise 1/
+├── Exercise 1 (A, B, C)  → Digital I/O module: LED control, button interrupts, and encapsulated state logic  
+├── Exercise 1 (D)        → Timer-based restriction on LED updates (non-blocking using TIM2)
+
+## /Exercise 2/
+├── Exercise 2 (A)        → UART receive via polling until terminator received  
+├── Exercise 2 (B)        → UART receive with callback on complete message  
+├── Exercise 2 (C)        → UART receive fully via RX interrupt, non-blocking input system  
+├── Exercise 2 (D)        → UART transmit via TX interrupt + double buffering for concurrent RX/TX
+
+## /Exercise 3/
+├── Exercise 3 (A)        → Periodic timer with callback using function pointers  
+├── Exercise 3 (B)        → Timer getter/setter with encapsulated state  
+├── Exercise 3 (C)        → One-shot timer module with delay and callback
+
+## /Exercise 4/
+├── Final Integration     → Complete UART command handler: supports LED pattern, echo, one-shot, and periodic timer via serial commands
 
  ## Testing Plan
 
