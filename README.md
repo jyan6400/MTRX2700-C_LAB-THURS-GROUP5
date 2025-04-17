@@ -30,27 +30,6 @@ The goal is to demonstrate modular, low-level embedded development using:
 
 ![Lab Structure](CLABProjectStructure.png)
 
-/Exercise 1/
-├── Exercise 1 (A,B,C)   -> Digital I/O (LED control, button interrupts, state encapsulation)
-├── Exercise 1 (D)       -> Timed LED update logic using hardware timers
-
-/Exercise 2/
-├── Exercise 2 (A)       -> UART send on button press
-├── Exercise 2 (B)       -> UART receive into memory buffer
-├── Exercise 2 (C)       -> Clock update to support faster baud rates
-├── Exercise 2 (D)       -> UART forwarding between two STM32 boards
-
-/Exercise 3/
-├── Exercise 3 (A)       -> Timer with callback at regular interval
-├── Exercise 3 (B)       -> Timer period getter/setter (encapsulation)
-├── Exercise 3 (C)       -> One-shot timer with callback
-
-/Exercise 4/
-├── Final Integration    -> Palindrome check, Caesar cipher, UART to MCU2, LED display with timer
-
-
-
-
  ## Testing Plan
 
 | **Module**                          | **Test Description**                                                                 | **Method**                                                                         | **Expected Outcome**                                                        | **Status** |
@@ -98,6 +77,61 @@ The goal is to demonstrate modular, low-level embedded development using:
 
 
 ## Integration Task (Modular Design Overview)
+
+                    +-------------------------+
+                    |         Start          |
+                    +-------------------------+
+                              |
+                              v
+         +--------------------------------------------+
+         | main(): System Initialization               |
+         | - SerialInitialise()                        |
+         | - SerialSetTermChar('#')                    |
+         | - SerialPrintPrompt()                       |
+         | - Enable_Serial_Interrupt()                 |
+         | - dio_init(NULL)                            |
+         +--------------------------------------------+
+                              |
+                              v
+         +--------------------------------------------+
+         | USART1 Interrupt: SerialInputReceive()      |
+         | - Buffer user input char-by-char            |
+         | - On term_char, call For_receive_done()     |
+         +--------------------------------------------+
+                              |
+                              v
+         +--------------------------------------------+
+         | command.c: For_receive_done()               |
+         | - Parse command + argument                  |
+         +--------------------------------------------+
+          /       |         |            |          \
+         /        |         |            |           \
+        v         v         v            v            v
++-------------+ +---------------------+ +---------------------+ +-----------------+ +---------------------+
+| "led" cmd   | | "serial" cmd        | | "oneshot" cmd       | | "timer" cmd     | | Invalid/Empty Cmd   |
+|-------------| |---------------------| |---------------------| |-----------------| |---------------------|
+| - timer_stop| | - Echo arg to user  | | - timer_stop        | | - timer_stop    | | Output error msg    |
+| - validate  | |                     | | - leds_off          | | - leds_off      | |---------------------|
+| - dio_setLED| |                     | | - timer_oneshot()   | | - timer_init()  |                      
++-------------+ +---------------------+ +---------------------+ +-----------------+ +---------------------+
+                                                              |                     |
+                                                              v                     v
+                                          +----------------------------------+ +------------------------------+
+                                          | timer.c: timer_oneshot()         | | timer.c: timer_init()        |
+                                          | - Setup one-shot delay           | | - Setup periodic callback    |
+                                          | - On expire, call flash_all_once | | - On each period, call       |
+                                          +----------------------------------+ |   blink_toggle_all           |
+                                                                                 +------------------------------+
+                                                              |                     |
+                                +-----------------------------+---------------------+
+                                |                                                     
+                                v                                                    
+                   +----------------------------------------+                    
+                   | flash_all_once() or blink_toggle_all() |                    
+                   | - dio_setLED() or dio_toggleLED()      |                    
+                   +----------------------------------------+                    
+
+
 
 
 ## Instructions for Use (STM32F3 Discovery Board)
