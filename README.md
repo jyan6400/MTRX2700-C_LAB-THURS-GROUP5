@@ -68,7 +68,14 @@ The goal is to demonstrate modular, low-level embedded development using:
 | **Exercise 4** – Final Integration       | End-to-end test: Palindrome → Caesar → UART → LED display                            | Type message in terminal → check output on MCU2 LEDs                              | Palindrome is encrypted and decoded; vowel/consonant counts shown at 500ms   | ✅        |
 |                                     | Test non-palindrome message handling                                                 | Send non-palindrome from PC                                                       | Message forwarded as-is to MCU2                                               | ✅        |
 |                                     | Edge case: input symbols and whitespace                                              | Send string with special characters                                               | Non-alphabetic characters are skipped or ignored safely                       | ✅        |
-
+Example Test Cases
+- Exercise 1A–C: Press PA0 repeatedly, observe LED shift right
+- Exercise 1D: Press PA0 rapidly, LEDs only update every 1s
+- Exercise 2A: Press PA0, see Hello UART in serial terminal
+- Exercise 2B: Type test<Enter> in terminal, check buffer in debugger
+- Exercise 2D: Chain two boards using UART TX/RX → Message forwarded
+- Exercise 3A–C: Timer-controlled LED behavior, observe toggles via PE8
+- Exercise 4: Full pipeline – input from PC, cipher, LED vowel/consonant display
 
 ## Project Module Descriptions
 
@@ -86,4 +93,28 @@ The goal is to demonstrate modular, low-level embedded development using:
 | **Exercise 4** – Final Integration | Combines UART, cipher, and LED modules across 2 MCUs | - MCU1: Palindrome check → Caesar → UART2 <br> - MCU2: Decode → Count vowels/consonants → LED display | 1. Type `"Racecar"` to MCU1 <br> 2. MCU2 LEDs toggle counts at 500ms | **Palindrome:** Encoded → Decoded <br> **Non-palindrome:** Forwarded <br> **Alternating LED** counts |
 
 
+## Instructions for Use (STM32F3 Discovery Board)
+Requirements:
+- STM32F3 Discovery Board (STM32F303VCTx)
+- USB Mini-B Cable (for power and UART)
+- STM32CubeIDE (v1.12 or later recommended)
+- UART Terminal: Tera Term or PuTTY
 
+Instructions:
+1. Clone or Download the repository:
+- Via Git: git clone <your-repo-url>
+2. Open STM32CubeIDE
+- File → Import → Existing Projects into Workspace
+- Select the project folder (e.g., Exercise1/Exercise1A_B_C)
+- Click Finish
+3. Build the Project
+- Right-click the project in Project Explorer → Build Project
+4. Connect STM32F3 Board
+- Plug in via USB Mini-B
+5. Flash the Firmware
+- Click the Green "Run" or "Debug" button
+6. Open UART Monitor (for UART exercises)
+- Open Tera Term or PuTTY
+- Connect to the COM port shown for STMicroelectronics STLink Virtual COM Port
+- Baud rate: 9600 (or updated value depending on clock config)
+- Settings: 8N1, No flow control
