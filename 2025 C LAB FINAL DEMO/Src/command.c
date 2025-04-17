@@ -39,9 +39,19 @@ static void blink_toggle_all(void)
 //Serial port data judgment callback function
 void For_receive_done(uint8_t *data, uint32_t len)
 {
-    // The double buffering is set in the serial interface.
-	//ere, the received data is processed by using ps_buffer.
-    data[len] = '\0';  //Append \0 at the end of the string.
+    // The double buffering is set in the serial interface
+	//When the received data is processed by using ps_buffer
+    data[len] = '\0';  //Append \0 at the end of the string
+
+    //Start the search from the last character of the string and move backward
+    for (int i = len - 1; i >= 0; --i) {
+        //Replace all illegal characters at the end of the parameters with '\0' for processing
+    	if (data[i] == '#' || data[i] == '\r' || data[i] == '\n') {
+            data[i] = '\0';		//Append \0 at the end of the string.
+        } else {
+            break;
+        }
+    }
 
     //Use the strtok function to split the string. When encountering a space character, convert it to '\0'.
     //Then extract "cmd" as the command. "arg" refers to a parameter.
