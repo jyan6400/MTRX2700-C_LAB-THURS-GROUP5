@@ -1,9 +1,18 @@
-# 📝 Integration Task – Group Meeting Minutes (Integration Debugging & Final Testing)
+# MTRX2700 Week 8 Pre-Demo Meeting Minutes  
+Date: 17/04/2025  
+Location: Mechatronics Dry Lab  
+Group Name: S4-G2 
+Minute Taker: Jason Yang
 
-**Date:** 17 April 2025  
-**Attendees:** Jason, Saksham, Shirui  
-**Project:** CLAB Exercise 4 – Final Integration  
-**Minutes file:** `minutes/minutes_17_4.txt`
+---
+
+## 0. Attendance Check
+
+| Name           | Present | 
+|----------------|---------|
+| Shirui         | ✅      | 
+| Saksham        | ✅      | 
+| Jason          | ✅      | 
 
 ---
 
