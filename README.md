@@ -68,6 +68,8 @@ The goal is to demonstrate modular, low-level embedded development using:
 | **Exercise 4** – Final Integration       | End-to-end test: Palindrome → Caesar → UART → LED display                            | Type message in terminal → check output on MCU2 LEDs                              | Palindrome is encrypted and decoded; vowel/consonant counts shown at 500ms   | ✅        |
 |                                     | Test non-palindrome message handling                                                 | Send non-palindrome from PC                                                       | Message forwarded as-is to MCU2                                               | ✅        |
 |                                     | Edge case: input symbols and whitespace                                              | Send string with special characters                                               | Non-alphabetic characters are skipped or ignored safely                       | ✅        |
+
+
 Example Test Cases
 - Exercise 1A–C: Press PA0 repeatedly, observe LED shift right
 - Exercise 1D: Press PA0 rapidly, LEDs only update every 1s
