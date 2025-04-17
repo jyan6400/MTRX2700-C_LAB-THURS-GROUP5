@@ -79,59 +79,74 @@ The goal is to demonstrate modular, low-level embedded development using:
 ## Integration Task (Modular Design Overview)
 
 ![Modular](Integration.png)
-                    +-------------------------+
-                    |         Start          |
-                    +-------------------------+
-                              |
-                              v
-         +--------------------------------------------+
-         | main(): System Initialization               |
-         | - SerialInitialise()                        |
-         | - SerialSetTermChar('#')                    |
-         | - SerialPrintPrompt()                       |
-         | - Enable_Serial_Interrupt()                 |
-         | - dio_init(NULL)                            |
-         +--------------------------------------------+
-                              |
-                              v
-         +--------------------------------------------+
-         | USART1 Interrupt: SerialInputReceive()      |
-         | - Buffer user input char-by-char            |
-         | - On term_char, call For_receive_done()     |
-         +--------------------------------------------+
-                              |
-                              v
-         +--------------------------------------------+
-         | command.c: For_receive_done()               |
-         | - Parse command + argument                  |
-         +--------------------------------------------+
-          /       |         |            |          \
-         /        |         |            |           \
-        v         v         v            v            v
-+-------------+ +---------------------+ +---------------------+ +-----------------+ +---------------------+
-| "led" cmd   | | "serial" cmd        | | "oneshot" cmd       | | "timer" cmd     | | Invalid/Empty Cmd   |
-|-------------| |---------------------| |---------------------| |-----------------| |---------------------|
-| - timer_stop| | - Echo arg to user  | | - timer_stop        | | - timer_stop    | | Output error msg    |
-| - validate  | |                     | | - leds_off          | | - leds_off      | |---------------------|
-| - dio_setLED| |                     | | - timer_oneshot()   | | - timer_init()  |                      
-+-------------+ +---------------------+ +---------------------+ +-----------------+ +---------------------+
-                                                              |                     |
-                                                              v                     v
-                                          +----------------------------------+ +------------------------------+
-                                          | timer.c: timer_oneshot()         | | timer.c: timer_init()        |
-                                          | - Setup one-shot delay           | | - Setup periodic callback    |
-                                          | - On expire, call flash_all_once | | - On each period, call       |
-                                          +----------------------------------+ |   blink_toggle_all           |
-                                                              |                   +------------------------------+
-                                                              |                     |
-                                +-----------------------------+---------------------+
-                                |                                                     
-                                v                                                    
-                   +----------------------------------------+                    
-                   | flash_all_once() or blink_toggle_all() |                    
-                   | - dio_setLED() or dio_toggleLED()      |                    
-                   +----------------------------------------+                    
+               
 
+**Modular Structure Overview**
+
+| Module | Functionality | Files Involved |
+|--------|---------------|----------------|
+| **1. LED Control + Button Interrupts + Timed Updates** | Controls LED outputs (on/off/toggle), handles GPIO interrupts from PA0, and runs periodic callbacks via TIM2 | `dio.c/h`, `timer.c/h` |
+| **2. UART Input/Output + Double Buffering** | UART-based serial communication with RX buffering and TX interrupts | `serial.c/h` |
+| **3. One-Shot Timer Callbacks** | Delayed single-run callbacks using TIM2 in one-pulse mode | `timer.c/h` |
+| **Integration Layer** | Parses user input, routes to appropriate module functions | `command.c` |
+
+**Module 1: LED Control, Button Interrupts, and Timed Updates**
+
+Key Functions:
+- `dio_init(callback)` — Initializes PE8–PE15 as LED outputs, configures PA0 as interrupt input.
+- `dio_setLED(index, state)` — Sets specific LED on/off.
+- `dio_toggleLED(index)` — Toggles individual LEDs.
+- `timer_init(period_ms, callback)` — Sets up recurring callbacks using TIM2.
+
+Interrupts:
+- PA0 triggers `EXTI0_IRQHandler`, which calls the registered callback function.
+
+Use Case:
+- Real-time LED status indicators, user feedback, or GPIO diagnostics in embedded systems.
+
+**Module 2: UART Serial Communication**
+
+Key Functions:
+- `SerialInitialise(baud, port, callback)` — Sets up USART1 with user-defined RX callback.
+- `SerialInputReceive(char)` — Accumulates characters until terminator (`#`) is reached.
+- `SerialOutputChar/String()` — Sends data out through UART.
+- `Enable_Serial_Interrupt()` — Enables RX/TX interrupt handling.
+
+Double Buffering:
+- Input is collected into `rx_buffer`, and on terminator, copied to `ps_buffer`, triggering `For_receive_done()`.
+
+Use Case:
+- Terminal-based command interface (e.g., PuTTY, Tera Term) for embedded testing, logging, and control.
+
+**Module 3: One-Shot Timer Callback**
+
+Key Functions:
+- `timer_oneshot(delay_ms, callback)` — Sets a one-time callback after a delay.
+- `timer_stop()` — Stops the timer and disables interrupts.
+
+Internal Mechanism:
+- Configures TIM2 in **One-Pulse Mode** (`TIM_CR1_OPM`) to trigger a callback only once.
+
+Use Case:
+- Delayed notifications, watchdog-like alerts, or LED flash-after-delay features.
+
+**Command Interface & Integration Layer (`command.c`)**
+
+Recognized Commands:
+| Command | Description |
+|---------|-------------|
+| `led <bit_pattern>` | Sets LEDs according to binary string (e.g., `led 10101010`) |
+| `serial <message>` | Echoes message back through UART |
+| `oneshot <delay_ms>` | After delay, flashes all LEDs once |
+| `timer <period_ms>` | Periodically toggles all LEDs |
+
+Flow Example:
+```text
+1. User types:      timer 500#
+2. UART buffers input and detects terminator (#)
+3. For_receive_done is called with parsed args
+4. command.c invokes: timer_init(500, blink_toggle_all)
+5. blink_toggle_all() toggles LED state every 500ms
 
 
 
