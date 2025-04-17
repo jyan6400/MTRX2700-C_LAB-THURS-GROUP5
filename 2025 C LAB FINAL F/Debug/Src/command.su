@@ -1,4 +1,0 @@
-../Src/command.c:16:20:leds_off	16	static
-../Src/command.c:22:13:flash_all_once	16	static,ignoring_inline_asm
-../Src/command.c:31:13:blink_toggle_all	16	static
-../Src/command.c:37:6:on_receive_done	1040	static

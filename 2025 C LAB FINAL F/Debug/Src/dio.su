@@ -1,7 +1,0 @@
-../Inc/core_cm4.h:1688:22:__NVIC_EnableIRQ	16	static
-../Inc/core_cm4.h:1816:22:__NVIC_SetPriority	16	static
-../Src/dio.c:12:6:dio_init	24	static
-../Src/dio.c:35:6:EXTI0_IRQHandler	8	static
-../Src/dio.c:44:6:dio_setLED	24	static
-../Src/dio.c:62:6:dio_toggleLED	24	static
-../Src/dio.c:71:9:dio_getLEDState	4	static
