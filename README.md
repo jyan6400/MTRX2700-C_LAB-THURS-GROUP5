@@ -148,7 +148,13 @@ Flow Example:
 4. command.c invokes: timer_init(500, blink_toggle_all)
 5. blink_toggle_all() toggles LED state every 500ms
 
+
+
 ---
+
+
+
+
 ## ✅ Exercise 4 Integration – Testing Plan
 
 | **Module**                          | **Test Description**                                                                 | **Method**                                                                         | **Expected Outcome**                                                        | **Status** |
