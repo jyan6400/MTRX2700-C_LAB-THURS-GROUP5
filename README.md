@@ -71,8 +71,8 @@ The goal is to demonstrate modular, low-level embedded development using:
 
 
 
-## Exercise 1
-### Parts a, b, c
+## Project Module Explanation
+###  **Exercise 1 (A,B,C)** – LED Control & Button Interface
 ### Purpose  
 - Encapsulates digital I/O functionality  
 - Abstracts register access via clean C functions  
@@ -100,7 +100,7 @@ The goal is to demonstrate modular, low-level embedded development using:
 - **Wraps around** after PE15
 
 
-### Part d
+### **Exercise 1 (D)** – Timed LED Updates
 ### Purpose  
 - Restricts LED update frequency using a hardware timer  
 - Ensures non-blocking LED state changes via interrupts  
