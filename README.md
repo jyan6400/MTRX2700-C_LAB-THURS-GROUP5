@@ -95,6 +95,9 @@ The goal is to demonstrate modular, low-level embedded development using:
 | **Exercise 4** – Final Integration | Combines UART, cipher, and LED modules across 2 MCUs | - MCU1: Palindrome check → Caesar → UART2 <br> - MCU2: Decode → Count vowels/consonants → LED display | 1. Type `"Racecar"` to MCU1 <br> 2. MCU2 LEDs toggle counts at 500ms | **Palindrome:** Encoded → Decoded <br> **Non-palindrome:** Forwarded <br> **Alternating LED** counts |
 
 
+## Integration Task (Modular Design Overview)
+
+
 ## Instructions for Use (STM32F3 Discovery Board)
 Requirements:
 - STM32F3 Discovery Board (STM32F303VCTx)
