@@ -78,6 +78,7 @@ The goal is to demonstrate modular, low-level embedded development using:
 
 ## Integration Task (Modular Design Overview)
 
+![Modular](Integration.png)
                     +-------------------------+
                     |         Start          |
                     +-------------------------+
