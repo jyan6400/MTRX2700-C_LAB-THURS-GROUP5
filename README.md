@@ -28,6 +28,8 @@ The goal is to demonstrate modular, low-level embedded development using:
 
 ## Project Structure
 
+![Lab Structure](CLABProjectStructure.png)
+
 /Exercise 1/
 ├── Exercise 1 (A,B,C)   -> Digital I/O (LED control, button interrupts, state encapsulation)
 ├── Exercise 1 (D)       -> Timed LED update logic using hardware timers
